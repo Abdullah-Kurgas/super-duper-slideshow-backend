@@ -2,8 +2,8 @@
   "name": "super-duper-slideshow-backend",
   "version": "1.0.0",
   "description": "My First Project",
-  "main": "index.js",
   "scripts": {
+    "main": "main.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
