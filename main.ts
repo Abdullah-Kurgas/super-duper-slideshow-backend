@@ -2,7 +2,8 @@ var express = require("express");
 var cors = require("cors");
 var bodyParser = require("body-parser");
 
-var { executeLogin } = require("./api's/user");
+var { executeLogin } = require("./apiCalls/user");
+var { getUuid,getSlideshow, createSlideshow } = require('./apiCalls/slideshow');
 
 const PORT = 3000;
 
@@ -15,9 +16,14 @@ app.get("/", (req: any, res: any) => {
   res.send({ test: "Selam alejkum" });
 });
 
-/* User execute's */
+/* User Calls */
 app.put("/executeLogin", executeLogin);
-////////////////////
+
+/* Slideshow Calls */
+app.get('/getUuid', getUuid);
+app.get('/getSlideshow/:url', getSlideshow);
+app.post('/createSlideshow', createSlideshow);
+
 
 app.listen(PORT, () => {
   console.log("App started");
