@@ -48,9 +48,18 @@ let getSlideshow = (req: any, res: any) => {
 
 let createSlideshow = (req: any, res: any) => {
     let { name, url, user_id } = req.body;
-    let sql = `INSERT INTO slideshow (name, url, user_id) VALUES (?, ?, ?);`;
+    let sql = `INSERT INTO slideshow (name, url, user_id, created_date) VALUES (?, ?, ?, NOW());`;
 
     conn.query(sql, [name, url, user_id], (err: any, result: any) => {
+        res.json(result);
+    })
+}
+
+let deleteSlideshow = (req: any, res: any) => {
+    let { id } = req.params;
+    let sql = 'DELETE FROM slideshow WHERE id = ?';
+
+    conn.query(sql, [id], (err: any, result: any) => {
         res.json(result);
     })
 }
@@ -60,5 +69,6 @@ export {
     getUuid,
     getSlideshow,
     getSlideshows,
-    createSlideshow
+    createSlideshow,
+    deleteSlideshow
 }
