@@ -1,5 +1,7 @@
 var conn = require('../mysqlConnection');
 
+let slideSql = 'SELECT * FROM slide WHERE slideshow_id = ?';
+
 let getUuid = (req: any, res: any) => {
     let sql = 'SELECT uuid() AS uuid';
 
@@ -8,14 +10,40 @@ let getUuid = (req: any, res: any) => {
     })
 }
 
-let getSlideshow = (req: any, res: any) => {
-    let { url } = req.params;
-    let sql = 'SELECT * FROM slideshow WHERE url = ?;';
+let getSlideshows = (req: any, res: any) => {
+    let { id } = req.params;
+    let sql = 'SELECT * FROM slideshow WHERE user_id = ?';
+    
+    conn.query(sql, [id], (err: any, result: any) => {
+        let slideshows: any = [];
+        
+        result.forEach((el: any) => {
+            conn.query(slideSql, [el.id], (err: any, result2: any) => {
+                let data = { ...el }
+                data.slides = result2;
+                slideshows.push(data);
 
-    conn.query(sql, [url], (err: any, result: any) => {
-        res.json(result[0] || {});
+                if (slideshows.length == result.length) {
+                    res.json(slideshows);
+                }
+            })
+        });
+
     })
+}
 
+let getSlideshow = (req: any, res: any) => {
+    let { id } = req.params;
+    let sql = 'SELECT * FROM slideshow WHERE id = ?';
+
+    conn.query(sql, [id], (err: any, result: any) => {
+        conn.query(slideSql, [id], (err: any, result2: any) => {
+            let data = { ...result[0] }
+            data.slides = result2;
+
+            res.json(data || {});
+        })
+    })
 }
 
 let createSlideshow = (req: any, res: any) => {
@@ -31,5 +59,6 @@ let createSlideshow = (req: any, res: any) => {
 export {
     getUuid,
     getSlideshow,
+    getSlideshows,
     createSlideshow
 }

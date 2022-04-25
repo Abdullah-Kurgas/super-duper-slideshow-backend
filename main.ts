@@ -3,7 +3,7 @@ var cors = require("cors");
 var bodyParser = require("body-parser");
 
 var { executeLogin } = require("./apiCalls/user");
-var { getUuid,getSlideshow, createSlideshow } = require('./apiCalls/slideshow');
+var { getUuid, getSlideshow, getSlideshows, createSlideshow } = require('./apiCalls/slideshow');
 
 const PORT = 3000;
 
@@ -21,7 +21,8 @@ app.put("/executeLogin", executeLogin);
 
 /* Slideshow Calls */
 app.get('/getUuid', getUuid);
-app.get('/getSlideshow/:url', getSlideshow);
+app.get('/getSlideshow/:id', getSlideshow);
+app.get('/getSlideshows/:id', getSlideshows);
 app.post('/createSlideshow', createSlideshow);
 
 
