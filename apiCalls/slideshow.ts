@@ -13,10 +13,10 @@ let getUuid = (req: any, res: any) => {
 let getSlideshows = (req: any, res: any) => {
     let { id } = req.params;
     let sql = 'SELECT * FROM slideshow WHERE user_id = ?';
-    
+
     conn.query(sql, [id], (err: any, result: any) => {
         let slideshows: any = [];
-        
+
         result.forEach((el: any) => {
             conn.query(slideSql, [el.id], (err: any, result2: any) => {
                 let data = { ...el }
@@ -33,11 +33,11 @@ let getSlideshows = (req: any, res: any) => {
 }
 
 let getSlideshow = (req: any, res: any) => {
-    let { id } = req.params;
-    let sql = 'SELECT * FROM slideshow WHERE id = ?';
+    let { uuid } = req.body;
+    let sql = 'SELECT * FROM slideshow WHERE url = ?';
 
-    conn.query(sql, [id], (err: any, result: any) => {
-        conn.query(slideSql, [id], (err: any, result2: any) => {
+    conn.query(sql, [uuid], (err: any, result: any) => {
+        conn.query(slideSql, [uuid], (err: any, result2: any) => {
             let data = { ...result[0] }
             data.slides = result2;
 

@@ -21,7 +21,7 @@ app.put("/executeLogin", executeLogin);
 
 /* Slideshow Calls */
 app.get('/getUuid', getUuid);
-app.get('/getSlideshow/:id', getSlideshow);
+app.put('/getSlideshow', getSlideshow);
 app.get('/getSlideshows/:id', getSlideshows);
 app.post('/createSlideshow', createSlideshow);
 
