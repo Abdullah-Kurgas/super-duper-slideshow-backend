@@ -2,8 +2,9 @@ var express = require("express");
 var cors = require("cors");
 var bodyParser = require("body-parser");
 
-var { executeLogin } = require("./apiCalls/user");
-var { getUuid, getSlideshow, getSlideshows, createSlideshow, deleteSlideshow } = require('./apiCalls/slideshow');
+import { executeLogin } from "./apiCalls/user";
+import { getUuid, getSlideshow, getSlideshows, createSlideshow, deleteSlideshow } from "./apiCalls/slideshow";
+import { createSlide, deleteSlide } from "./apiCalls/slide";
 
 const PORT = 3000;
 
@@ -25,6 +26,10 @@ app.put('/getSlideshow', getSlideshow);
 app.get('/getSlideshows/:id', getSlideshows);
 app.post('/createSlideshow', createSlideshow);
 app.delete('/deleteSlideshow/:id', deleteSlideshow);
+
+/* Slide Calls */
+app.post('/createSlide', createSlide);
+app.delete('/deleteSlide/:id', deleteSlide);
 
 
 app.listen(PORT, () => {
