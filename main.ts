@@ -3,7 +3,7 @@ var cors = require("cors");
 var bodyParser = require("body-parser");
 
 import { executeLogin } from "./apiCalls/user";
-import { getUuid, getSlideshow, getSlideshows, createSlideshow, deleteSlideshow } from "./apiCalls/slideshow";
+import { getUuid, getSlideshow, getSlideshows, createSlideshow, deleteSlideshow, editSlideshow } from "./apiCalls/slideshow";
 import { createSlide, editSlide, deleteSlide } from "./apiCalls/slide";
 
 const PORT = 3000;
@@ -25,6 +25,7 @@ app.get('/getUuid', getUuid);
 app.put('/getSlideshow', getSlideshow);
 app.get('/getSlideshows/:id', getSlideshows);
 app.post('/createSlideshow', createSlideshow);
+app.put('/editSlideshow', editSlideshow);
 app.delete('/deleteSlideshow/:id', deleteSlideshow);
 
 /* Slide Calls */

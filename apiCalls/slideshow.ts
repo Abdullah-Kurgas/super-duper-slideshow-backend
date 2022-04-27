@@ -6,7 +6,7 @@ let getUuid = (req: any, res: any) => {
     let sql = 'SELECT uuid() AS uuid';
 
     conn.query(sql, (err: any, result: any) => {
-        if(err) return res.json(err);
+        if (err) return res.json(err);
         res.json(result[0] || {});
     })
 }
@@ -52,8 +52,19 @@ let createSlideshow = (req: any, res: any) => {
     let sql = `INSERT INTO slideshow (name, url, user_id, created_date) VALUES (?, ?, ?, NOW());`;
 
     conn.query(sql, [name, url, user_id], (err: any, result: any) => {
-        if(err) return res.json(err);
-        res.json(result);        
+        if (err) return res.json(err);
+        res.json(result);
+    })
+}
+
+let editSlideshow = (req: any, res: any) => {
+    let { id, name } = req.body;
+    let sql = 'UPDATE slideshow SET name = ? WHERE id = ?';
+
+    conn.query(sql, [name, id], (err: any, result: any) => {
+        if (err) return res.json(err);
+
+        res.json(result);
     })
 }
 
@@ -62,7 +73,7 @@ let deleteSlideshow = (req: any, res: any) => {
     let sql = 'DELETE FROM slideshow WHERE id = ?';
 
     conn.query(sql, [id], (err: any, result: any) => {
-        if(err) return res.json(err);
+        if (err) return res.json(err);
         res.json(result);
     })
 }
@@ -73,5 +84,6 @@ export {
     getSlideshow,
     getSlideshows,
     createSlideshow,
+    editSlideshow,
     deleteSlideshow
 }
