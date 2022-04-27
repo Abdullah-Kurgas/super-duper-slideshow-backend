@@ -4,7 +4,7 @@ var bodyParser = require("body-parser");
 
 import { executeLogin } from "./apiCalls/user";
 import { getUuid, getSlideshow, getSlideshows, createSlideshow, deleteSlideshow } from "./apiCalls/slideshow";
-import { createSlide, deleteSlide } from "./apiCalls/slide";
+import { createSlide, editSlide, deleteSlide } from "./apiCalls/slide";
 
 const PORT = 3000;
 
@@ -29,6 +29,7 @@ app.delete('/deleteSlideshow/:id', deleteSlideshow);
 
 /* Slide Calls */
 app.post('/createSlide', createSlide);
+app.put('/editSlide', editSlide)
 app.delete('/deleteSlide/:id', deleteSlide);
 
 

@@ -21,6 +21,17 @@ let createSlide = (req: any, res: any) => {
     })
 }
 
+let editSlide = (req: any, res: any) => {
+    let { id, image, video_url, website_url, duration } = req.body;
+    let sql = 'UPDATE slide SET image = ?, video_url = ?, website_url = ?, duration = ? WHERE id = ?';
+
+    conn.query(sql, [image, video_url, website_url, duration, id], (err: any, result: any) => {
+        if (err) return res.json(err);
+
+        res.json(result);
+    })
+}
+
 let deleteSlide = (req: any, res: any) => {
     let { id } = req.params;
     let sql = 'DELETE FROM slide WHERE id = ?';
@@ -35,5 +46,6 @@ let deleteSlide = (req: any, res: any) => {
 export {
     getSlides,
     createSlide,
+    editSlide,
     deleteSlide
 }
