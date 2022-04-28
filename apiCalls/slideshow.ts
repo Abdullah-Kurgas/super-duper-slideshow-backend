@@ -23,7 +23,6 @@ let getSlideshows = (req: any, res: any) => {
                 let data = { ...el }
                 data.slides = result2;
                 slideshows.push(data);
-                console.log(slideshows, id, result2);
                 
                 if (slideshows.length == result.length) {
                     res.json(slideshows);
