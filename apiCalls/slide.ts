@@ -11,10 +11,10 @@ let getSlides = (req: any, res: any) => {
 
 let createSlide = (req: any, res: any) => {
     let { image, video_url, website_url, duration, slideshow_id } = req.body;
-    let sql = `INSERT INTO slide (${image ? 'image' : video_url ? 'video_url' : 'website_url'}, duration, slideshow_id ) 
-    VALUES(?, ?, ?)`;
+    let sql = `INSERT INTO slide (image, video_url, website_url, duration, slideshow_id ) 
+    VALUES(?, ?, ?, ?, ?)`;
 
-    conn.query(sql, [(image || video_url || website_url), duration, slideshow_id], (err: any, result: any) => {
+    conn.query(sql, [image, video_url, website_url, duration, slideshow_id], (err: any, result: any) => {
         if (err) return res.json(err);
 
         res.json(result);
