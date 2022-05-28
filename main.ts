@@ -6,7 +6,7 @@ import { executeLogin } from "./apiCalls/user";
 import { getUuid, getSlideshow, getSlideshows, createSlideshow, deleteSlideshow, editSlideshow } from "./apiCalls/slideshow";
 import { createSlide, editSlide, deleteSlide, getSlides } from "./apiCalls/slide";
 
-const PORT = 3305;
+const PORT = process.env.PORT || 3305;
 
 const app = express()
   .use(cors())
