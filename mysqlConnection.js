@@ -7,7 +7,7 @@ var conn = mysql.createConnection({
   database: "b24i45k203cwhxoycsxz",
 });
 
-conn.connect((err: Error) => {
+conn.connect((err) => {
   if (err) throw err;
   console.log("Mysql is Connected");
 });

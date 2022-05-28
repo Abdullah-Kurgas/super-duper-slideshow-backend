@@ -2,9 +2,9 @@ var express = require("express");
 var cors = require("cors");
 var bodyParser = require("body-parser");
 
-import { executeLogin } from "./apiCalls/user";
-import { getUuid, getSlideshow, getSlideshows, createSlideshow, deleteSlideshow, editSlideshow } from "./apiCalls/slideshow";
-import { createSlide, editSlide, deleteSlide, getSlides } from "./apiCalls/slide";
+var { executeLogin } = require("./apiCalls/user") ;
+var { getUuid, getSlideshow, getSlideshows, createSlideshow, deleteSlideshow, editSlideshow } = require("./apiCalls/slideshow");
+var { createSlide, editSlide, deleteSlide, getSlides } = require("./apiCalls/slide");
 
 const PORT = process.env.PORT || 3305;
 
@@ -13,7 +13,7 @@ const app = express()
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/", (req: any, res: any) => {
+app.get("/", (req, res) => {
   res.send({ test: "Selam alejkum" });
 });
 
