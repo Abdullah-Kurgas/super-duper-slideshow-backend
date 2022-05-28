@@ -1,1 +1,1 @@
-web: nodemon main.ts
+web: node main.ts
