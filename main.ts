@@ -6,7 +6,7 @@ import { executeLogin } from "./apiCalls/user";
 import { getUuid, getSlideshow, getSlideshows, createSlideshow, deleteSlideshow, editSlideshow } from "./apiCalls/slideshow";
 import { createSlide, editSlide, deleteSlide, getSlides } from "./apiCalls/slide";
 
-const PORT = 3000;
+const PORT = 3305;
 
 const app = express()
   .use(cors())
@@ -36,5 +36,5 @@ app.delete('/deleteSlide/:id', deleteSlide);
 
 
 app.listen(PORT, () => {
-  console.log("App started");
+  console.log("App started on PORT: "+ PORT);
 });
