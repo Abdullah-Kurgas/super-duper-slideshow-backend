@@ -6,6 +6,12 @@ var conn = mysql.createConnection({
   user: "u8qcoxfr67ljbwll",
   database: "b24i45k203cwhxoycsxz",
 });
+// var conn = mysql.createConnection({
+//   host: "localhost",
+//   password: "53abc8dmitl",
+//   user: "root",
+//   database: "super_slideshow",
+// });
 
 conn.connect((err) => {
   if (err) throw err;

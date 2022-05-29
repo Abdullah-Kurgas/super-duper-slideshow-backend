@@ -2,7 +2,7 @@ var express = require("express");
 var cors = require("cors");
 var bodyParser = require("body-parser");
 
-var { executeLogin } = require("./apiCalls/user") ;
+var { executeLogin, executeSignUp } = require("./apiCalls/user") ;
 var { getUuid, getSlideshow, getSlideshows, createSlideshow, deleteSlideshow, editSlideshow } = require("./apiCalls/slideshow");
 var { createSlide, editSlide, deleteSlide, getSlides } = require("./apiCalls/slide");
 
@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
 
 /* User Calls */
 app.put("/executeLogin", executeLogin);
+app.post("/executeSignUp", executeSignUp);
 
 /* Slideshow Calls */
 app.get('/getUuid', getUuid);
