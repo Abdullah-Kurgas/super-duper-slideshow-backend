@@ -32,11 +32,11 @@ let editSlide = (req, res) => {
     })
 }
 
-let deleteSlide = (req, res) => {
+let deleteSlide = (req, res, uuid) => {
     let { id } = req.params;
-    let sql = 'DELETE FROM slide WHERE id = ?';
+    let sql = `DELETE FROM slide WHERE ${uuid ? 'url' : 'id'} = ?`;
 
-    conn.query(sql, [id], (err, result) => {
+    conn.query(sql, [(uuid ? uuid : id)], (err, result) => {
         if (err) return res.json(err);
 
         res.json(result);

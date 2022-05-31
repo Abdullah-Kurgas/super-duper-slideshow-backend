@@ -1,4 +1,5 @@
 var conn = require('../mysqlConnection');
+var { deleteSlide } = require('../apiCalls/slide');
 
 let slideSql = 'SELECT * FROM slide WHERE slideshow_id = ?';
 
@@ -70,12 +71,13 @@ let editSlideshow = (req, res) => {
 }
 
 let deleteSlideshow = (req, res) => {
-    let { id } = req.params;
-    let sql = 'DELETE FROM slideshow WHERE id = ?';
+    let { uuid } = req.params;
+    let sql = 'DELETE FROM slideshow WHERE url = ?';
 
     conn.query(sql, [id], (err, result) => {
         if (err) return res.json(err);
-        res.json(result);
+
+        deleteSlide(undefined, undefined, uuid);
     })
 }
 
