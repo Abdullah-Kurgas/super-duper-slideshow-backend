@@ -27,7 +27,7 @@ app.put('/getSlideshow', getSlideshow);
 app.get('/getSlideshows/:id', getSlideshows);
 app.post('/createSlideshow', createSlideshow);
 app.put('/editSlideshow', editSlideshow);
-app.delete('/deleteSlideshow/:id', deleteSlideshow);
+app.delete('/deleteSlideshow/:url', deleteSlideshow);
 
 /* Slide Calls */
 app.get('/getSlides/:id', getSlides);
