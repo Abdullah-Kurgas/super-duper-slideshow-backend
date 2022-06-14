@@ -40,7 +40,7 @@ let getSlideshow = (req, res) => {
 
     conn.query(sql, [uuid], (err, result) => {
         conn.query(slideSql, [uuid], (err, result2) => {
-            let data = { ...result[0] }
+            let data = { ...result?.[0] }
             data.slides = result2;
 
             res.json(data || {});

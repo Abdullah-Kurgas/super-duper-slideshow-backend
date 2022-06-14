@@ -8,9 +8,9 @@ let executeLogin = (req, res) => {
   conn.query(sql, [username, password], (err, result) => {
     if (result?.length == 0) return res.json({ msg: 'Wrong username or password.' });
     
-    delete result[0]?.password;
+    delete result?.[0]?.password;
     
-    res.json(result[0] || {});
+    res.json(result?.[0] || {});
   });
 };
 
