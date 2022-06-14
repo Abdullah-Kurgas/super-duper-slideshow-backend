@@ -16,15 +16,18 @@ let getSlideshows = (req, res) => {
     let sql = 'SELECT * FROM slideshow WHERE user_id = ?';
 
     conn.query(sql, [id], (err, result) => {
-        if(result?.length == 0) return res.json(result);
+        if (result?.length == 0) {
+            res.json(result)
+            return;
+        };
         let slideshows = [];
 
-        result?.forEach((el) => {
+        result.forEach((el) => {
             conn.query(slideSql, [el.url], (err, result2) => {
                 let data = { ...el }
                 data.slides = result2;
                 slideshows.push(data);
-                
+
                 if (slideshows?.length == result?.length) {
                     res.json(slideshows);
                 }
@@ -73,19 +76,19 @@ let deleteSlideshow = (req, res) => {
     let { url } = req.params;
     let slideSql = `DELETE FROM slide WHERE slideshow_id = ?`;
     let slideshowSql = 'DELETE FROM slideshow WHERE url = ?';
-    
+
 
     conn.query(slideSql, [url], (err, result) => {
         if (err) return res.json(err);
 
         conn.query(slideshowSql, [url], (err, result) => {
-        if (err) return res.json(err);
+            if (err) return res.json(err);
 
             res.json(result);
         })
     })
 
-    
+
 }
 
 
