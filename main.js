@@ -9,9 +9,10 @@ var { createSlide, editSlide, deleteSlide, getSlides } = require("./apiCalls/sli
 const PORT = process.env.PORT || 3305;
 
 const app = express()
-  .use(cors())
-  .use(bodyParser.json())
-  .use(bodyParser.urlencoded({ extended: true }));
+.use(cors())
+.use(bodyParser.json())
+.use(bodyParser.urlencoded({ extended: true }))
+.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 app.get("/", (req, res) => {
   res.send({ test: "Selam alejkum" });
