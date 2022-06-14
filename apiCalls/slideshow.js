@@ -19,7 +19,7 @@ let getSlideshows = (req, res) => {
         if(result?.length == 0) return res.json(result);
         let slideshows = [];
 
-        result.forEach((el) => {
+        result?.forEach((el) => {
             conn.query(slideSql, [el.url], (err, result2) => {
                 let data = { ...el }
                 data.slides = result2;
