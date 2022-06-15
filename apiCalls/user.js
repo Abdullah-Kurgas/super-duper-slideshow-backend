@@ -22,7 +22,7 @@ let executeLogin = (req, res) => {
 let executeSignUp = (req, res) => {
   let { email, username, password } = req.body;
 
-  let sql = `INSERT INTO user (email, first_name, last_name, username, password, created_at) VALUES(?, '', '', ?, ?, NOW())`;
+  let sql = `INSERT INTO user (email, username, password, created_at) VALUES(?, ?, ?, NOW())`;
 
   conn.query(sql, [email, username, password], (err, result) => {
     if (err) throw Error(err.errno);
