@@ -16,6 +16,8 @@ let getSlideshows = (req, res) => {
     let sql = 'SELECT * FROM slideshow WHERE user_id = ?';
 
     conn.query(sql, [id], (err, result) => {
+        if(err) throw Error(err.errno);
+        
         if (!result) {
             res.json({ errorMsg: 'Server error' });
             return;
