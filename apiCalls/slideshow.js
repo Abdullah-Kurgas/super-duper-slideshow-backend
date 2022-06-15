@@ -16,7 +16,7 @@ let getSlideshows = (req, res) => {
     let sql = 'SELECT * FROM slideshow WHERE user_id = ?';
 
     conn.query(sql, [id], (err, result) => {
-        if (result?.length == 0) {
+        if (result?.length == 0 || !result) {
             res.json(result)
             return;
         };
