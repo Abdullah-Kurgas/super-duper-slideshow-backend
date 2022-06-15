@@ -6,6 +6,8 @@ let executeLogin = (req, res) => {
   let sql = `SELECT * FROM user WHERE username = ? AND password = ?`;
 
   conn.query(sql, [username, password], (err, result) => {
+    if(err) throw err;
+
     if (result?.length == 0) {
       res.json({ msg: 'Wrong username or password.' });
       return;
@@ -18,13 +20,18 @@ let executeLogin = (req, res) => {
 };
 
 let executeSignUp = (req, res) => {
-  let { email, firstName, lastName, username, password } = req.body;
+  let { email, username, password } = req.body;
 
-  let sql = `INSERT INTO user (email, first_name, last_name, username, password, created_at) VALUES(?, ?, ?, ?, ?, NOW())`;
+  let sql = `INSERT INTO user (email, first_name, last_name, username, password, created_at) VALUES(?, '', '', ?, ?, NOW())`;
 
-  conn.query(sql, [email, firstName, lastName, username, password], (err, result) => {
-    console.log(result);
-    res.json(result);
+  conn.query(sql, [email, username, password], (err, result) => {
+    if(err) throw err;
+    conn.query('SELECT * FROM user WHERE id = ?', [result.insertId], (err2, result2)=>{
+      if(err2) throw err2;
+      
+      delete result2?.[0]?.password;
+      res.json(result2?.[0] || {});
+    })
   })
 }
 
