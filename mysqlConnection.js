@@ -1,17 +1,12 @@
 var mysql = require("mysql2");
 
+var mysql = require('mysql');
 var conn = mysql.createConnection({
-  host: "b24i45k203cwhxoycsxz-mysql.services.clever-cloud.com",
-  password: "Q0lrPcNfOBpshjrQA4ee",
-  user: "u8qcoxfr67ljbwll",
-  database: "b24i45k203cwhxoycsxz",
+  host: process.env.MYSQL_ADDON_HOST,
+  database: process.env.MYSQL_ADDON_DB,
+  user: process.env.MYSQL_ADDON_USER,
+  password: process.env.MYSQL_ADDON_PASSWORD
 });
-// var conn = mysql.createConnection({
-//   host: "localhost",
-//   password: "53abc8dmitl",
-//   user: "root",
-//   database: "super_slideshow",
-// });
 
 conn.connect((err) => {
   if (err) throw err;
