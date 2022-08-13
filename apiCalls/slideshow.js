@@ -1,105 +1,68 @@
-var conn = require('../mysqlConnection');
+const { ObjectId } = require("mongodb");
+const mongodb = require("../mysqlConnection");
+const { getSlidesFunc, generateUuid, returnResponseMsg } = require("./action-service");
 
-let slideSql = 'SELECT * FROM slide WHERE slideshow_id = ?';
+const db = mongodb.db();
 
-let getUuid = (req, res) => {
-    let sql = 'SELECT uuid() AS uuid';
-
-    conn.query(sql, (err, result) => {
-        if (err) return res.json(err);
-        res.json(result[0] || {});
-    })
-}
-
-let getSlideshows = (req, res) => {
+let getSlideshows = async (req, res) => {
     let { id } = req.params;
-    let sql = 'SELECT * FROM slideshow WHERE user_id = ?';
+    var listSlideshow = [];
 
-    conn.query(sql, [id], (err, result) => {
-        if(err) throw Error(err.errno);
-        
-        if (!result) {
-            res.json({ errorMsg: 'Server error' });
-            return;
+    let slideshows = await db.collection('slideshow').find({ user_id: id }).toArray();
+
+    slideshows.forEach(async (slideshow) => {
+        slideshow.slides = await getSlidesFunc(slideshow.url);
+        listSlideshow.push(slideshow);
+
+        if (listSlideshow.length == slideshows.length) {
+            res.json(listSlideshow);
         }
-        if (result?.length == 0) {
-            res.json(result)
-            return;
-        };
-        let slideshows = [];
-
-        result.forEach((el) => {
-            conn.query(slideSql, [el.url], (err, result2) => {
-                let data = { ...el }
-                data.slides = result2;
-                slideshows.push(data);
-
-                if (slideshows?.length == result?.length) {
-                    res.json(slideshows);
-                }
-            })
-        });
-
     })
 }
 
 let getSlideshow = (req, res) => {
     let { uuid } = req.body;
-    let sql = 'SELECT * FROM slideshow WHERE url = ?';
 
-    conn.query(sql, [uuid], (err, result) => {
-        conn.query(slideSql, [uuid], (err, result2) => {
-            let data = { ...result?.[0] }
-            data.slides = result2;
+    db.collection('slideshow').findOne({ url: uuid }, async (err, result) => {
+        if (err) throw err;
 
-            res.json(data || {});
-        })
+        result.slides = await getSlidesFunc(result.url);
+
+        res.json(result);
     })
 }
 
 let createSlideshow = (req, res) => {
-    let { name, url, user_id } = req.body;
-    let sql = `INSERT INTO slideshow (name, url, user_id, created_date) VALUES (?, ?, ?, NOW());`;
+    let generatedUuid = generateUuid();
 
-    conn.query(sql, [name, url, user_id], (err, result) => {
-        if (err) return res.json(err);
-        res.json(result);
-    })
+    db.collection('slideshow').insertOne({ ...req.body, url: generatedUuid, created_at: new Date().toLocaleString() }, (err, result) => {
+        if (err) throw err;
+        res.json({ ...result, uuid: generatedUuid, msg: returnResponseMsg('slideshow', 'create') });
+    });
 }
 
 let editSlideshow = (req, res) => {
-    let { id, name } = req.body;
-    let sql = 'UPDATE slideshow SET name = ? WHERE id = ?';
+    let { _id, name } = req.body;
 
-    conn.query(sql, [name, id], (err, result) => {
-        if (err) return res.json(err);
-
-        res.json(result);
+    db.collection('slideshow').updateOne({ _id: ObjectId(_id) }, { $set: { name: name } }, (err, result) => {
+        if (err) throw err;
+        res.json({ ...result, msg: returnResponseMsg('slideshow', 'edit') });
     })
 }
 
-let deleteSlideshow = (req, res) => {
+let deleteSlideshow = async (req, res) => {
     let { url } = req.params;
-    let slideSql = `DELETE FROM slide WHERE slideshow_id = ?`;
-    let slideshowSql = 'DELETE FROM slideshow WHERE url = ?';
 
+    await db.collection('slide').deleteMany({ slideshow_id: url })
+    
+    let deletedSlideshow = await db.collection('slideshow').deleteOne({ url: url });
 
-    conn.query(slideSql, [url], (err, result) => {
-        if (err) return res.json(err);
-
-        conn.query(slideshowSql, [url], (err, result) => {
-            if (err) return res.json(err);
-
-            res.json(result);
-        })
-    })
-
+    res.json({ ...deletedSlideshow, msg: returnResponseMsg('slideshow', 'delete') })
 
 }
 
 
 module.exports = {
-    getUuid,
     getSlideshow,
     getSlideshows,
     createSlideshow,

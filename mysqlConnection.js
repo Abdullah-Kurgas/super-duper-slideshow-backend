@@ -1,15 +1,13 @@
-var mysql = require('mysql');
+const { MongoClient } = require('mongodb');
 
-var conn = mysql.createConnection({
-  host: process.env.MYSQL_ADDON_HOST,
-  database: process.env.MYSQL_ADDON_DB,
-  user: process.env.MYSQL_ADDON_USER,
-  password: process.env.MYSQL_ADDON_PASSWORD
+const uri = "mongodb+srv://abdullah:h4sf175JShqCSWwP@cluster0.zirgk5q.mongodb.net/super-slideshow?retryWrites=true&w=majority";
+
+const mongodb = new MongoClient(uri);
+mongodb.connect(async (err, client) => {
+  const { app, PORT } = require('./main');
+
+  app.listen(PORT);
+  console.log('App and Database are working');
 });
 
-conn.connect((err) => {
-  if (err) throw err;
-  console.log("Mysql is Connected");
-});
-
-module.exports = conn;
+module.exports = mongodb;

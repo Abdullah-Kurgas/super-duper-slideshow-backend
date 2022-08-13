@@ -3,7 +3,7 @@ var cors = require("cors");
 var bodyParser = require("body-parser");
 
 var { executeLogin, executeSignUp } = require("./apiCalls/user") ;
-var { getUuid, getSlideshow, getSlideshows, createSlideshow, deleteSlideshow, editSlideshow } = require("./apiCalls/slideshow");
+var { getSlideshow, getSlideshows, createSlideshow, deleteSlideshow, editSlideshow } = require("./apiCalls/slideshow");
 var { createSlide, editSlide, deleteSlide, getSlides } = require("./apiCalls/slide");
 
 const PORT = process.env.PORT || 3305;
@@ -22,7 +22,6 @@ app.put("/executeLogin", executeLogin);
 app.post("/executeSignUp", executeSignUp);
 
 /* Slideshow Calls */
-app.get('/getUuid', getUuid);
 app.put('/getSlideshow', getSlideshow);
 app.get('/getSlideshows/:id', getSlideshows);
 app.post('/createSlideshow', createSlideshow);
@@ -36,6 +35,7 @@ app.put('/editSlide', editSlide)
 app.delete('/deleteSlide/:id', deleteSlide);
 
 
-app.listen(PORT, () => {
-  console.log("App started on PORT: "+ PORT);
-});
+module.exports = {
+  app,
+  PORT
+};

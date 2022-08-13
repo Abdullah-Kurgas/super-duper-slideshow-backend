@@ -1,46 +1,34 @@
-var conn = require('../mysqlConnection');
+const { ObjectId } = require("mongodb");
+const mongodb = require("../mysqlConnection");
+const { getSlidesFunc, returnResponseMsg, deleteElement } = require("./action-service");
 
-let getSlides = (req, res) => {
+const db = mongodb.db();
+
+let getSlides = async (req, res) => {
     let { id } = req.params;
-    let sql = 'SELECT * FROM slide WHERE slideshow_id = ?';
 
-    conn.query(sql, [id], (err, result) => {
-        res.json(result);
-    })
+    let slides = await getSlidesFunc(id);
+
+    res.json(slides);
 }
 
 let createSlide = (req, res) => {
-    let { image, video_url, website_url, duration, slideshow_id } = req.body;
-    let sql = `INSERT INTO slide (image, video_url, website_url, duration, slideshow_id ) 
-    VALUES(?, ?, ?, ?, ?)`;
-
-    conn.query(sql, [image, video_url, website_url, duration, slideshow_id], (err, result) => {
-        if (err) return res.json(err);
-
-        res.json(result);
+    db.collection('slide').insertOne(req.body, (err, result) => {
+        if (err) throw err;
+        res.json({ ...result, msg: returnResponseMsg('slide', 'create') });
     })
 }
 
 let editSlide = (req, res) => {
-    let { id, image, video_url, website_url, duration } = req.body;
-    let sql = 'UPDATE slide SET image = ?, video_url = ?, website_url = ?, duration = ? WHERE id = ?';
-
-    conn.query(sql, [image, video_url, website_url, duration, id], (err, result) => {
-        if (err) return res.json(err);
-
-        res.json(result);
-    })
+    db.collection('slide').updateOne({ _id: ObjectId(req.body._id) }, { $set: req.body }, (err, result) => {
+        if (err) throw err;
+        res.json({ ...result, msg: returnResponseMsg('slide', 'edit') });
+    });
 }
 
-let deleteSlide = (req, res) => {
-    let { id } = req.params;
-    let sql = `DELETE FROM slide WHERE id = ?`;
-
-    conn.query(sql, [id], (err, result) => {
-        if (err) return res.json(err);
-
-        res.json(result);
-    })
+let deleteSlide = async (req, res) => {
+    let result = await deleteElement('slide', req.params.id);
+    res.json({ ...result, msg: returnResponseMsg('slide', 'delete') });
 }
 
 module.exports = {
