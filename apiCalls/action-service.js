@@ -8,6 +8,11 @@ let generateUuid = () => {
     return uuid();
 }
 
+let getElementById = async (id, collection) => {
+    let element = await db.collection(collection).findOne({ _id: id });
+    return element;
+}
+
 let getSlidesFunc = async (id) => {
     let slides = await db.collection('slide').find({ slideshow_id: id }).toArray();
     return slides;
@@ -26,5 +31,6 @@ module.exports = {
     getSlidesFunc,
     generateUuid,
     returnResponseMsg,
-    deleteElement
+    deleteElement,
+    getElementById
 }

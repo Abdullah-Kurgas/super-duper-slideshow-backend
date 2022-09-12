@@ -9,6 +9,8 @@ let getSlideshows = async (req, res) => {
     var listSlideshow = [];
 
     let slideshows = await db.collection('slideshow').find({ user_id: id }).toArray();
+    
+    if(slideshows.length == 0) return res.json(slideshows);
 
     slideshows.forEach(async (slideshow) => {
         slideshow.slides = await getSlidesFunc(slideshow.url);
