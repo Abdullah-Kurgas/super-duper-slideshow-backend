@@ -1,5 +1,6 @@
+const { ObjectId } = require("mongodb");
 const mongodb = require("../mysqlConnection");
-const { generateUuid, getElementById } = require("./action-service");
+const { generateUuid, getElementById, returnResponseMsg } = require("./action-service");
 
 const db = mongodb.db();
 
@@ -33,9 +34,21 @@ let executeSignUp = (req, res) => {
       res.json(user);
     })
   }
+}
 
+let getUsers = async (req, res) => {
+  let users = await db.collection('user').find({ role: 'QUEST' }).toArray();
+  
+  res.json(users);
+}
 
+let deleteUser = async (req, res) => {
+  let { id } = req.params;
+  
+  let deletedUser = await db.collection('user').deleteOne({ _id: ObjectId(id) });
+
+  res.json({ ...deletedUser, msg: returnResponseMsg('user', 'delete') });
 
 }
 
-module.exports = { executeLogin, executeSignUp };
+module.exports = { executeLogin, executeSignUp, getUsers, deleteUser };
